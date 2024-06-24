@@ -1,0 +1,58 @@
+using System;
+using System.Collections.Generic;
+
+public class CPHInline
+{
+    public bool Execute()
+    {
+        // Get rawInput and assign to colorInput
+        CPH.TryGetArg<string>("rawInput", out string colorInput);
+        // Set colorInput to UPPERCASE
+        colorInput = colorInput.ToUpper();
+        // Create dictionary map, where color name reflects hex value 
+        Dictionary<string, string> colorCodes = new Dictionary<string, string>();
+        colorCodes.Add("WHITE", "#FFFFFF");
+        colorCodes.Add("SILVER", "#C0C0C0");
+        colorCodes.Add("GRAY", "#808080");
+        colorCodes.Add("GREY", "#808080");
+        colorCodes.Add("BLACK", "#000000");
+        colorCodes.Add("RED", "#FF0000");
+        colorCodes.Add("MAROON", "#800000");
+        colorCodes.Add("BROWN", "#A52A2A");
+        colorCodes.Add("YELLOW", "#FFFF00");
+        colorCodes.Add("OLIVE", "#808000");
+        colorCodes.Add("LIME", "#00FF00");
+        colorCodes.Add("GREEN", "#008000");
+        colorCodes.Add("AQUA", "#00FFFF");
+        colorCodes.Add("TEAL", "#008080");
+        colorCodes.Add("CYAN", "#00FFFF");
+        colorCodes.Add("BLUE", "#0000FF");
+        colorCodes.Add("LIGHTBLUE", "#ADD8E6");
+        colorCodes.Add("NAVY", "#000080");
+        colorCodes.Add("FUCHSIA", "#FF00FF");
+        colorCodes.Add("PURPLE", "#800080");
+        colorCodes.Add("PINK", "#FF69B4");
+        colorCodes.Add("VIOLET", "#EE82EE");
+        colorCodes.Add("ORANGE", "#FFA500");
+        colorCodes.Add("GOLD", "#FFD700");
+        
+        // If color exists in dictionary, set to that color
+        if (colorCodes.ContainsKey(colorInput))
+        {
+            CPH.SetArgument("rawInput", colorCodes[colorInput]);
+        }
+        // If not, check that its a hash code
+        else if (colorInput.StartsWith("#"))
+        {
+            colorCodes.Add(colorInput, colorInput);
+            CPH.SetArgument("rawInput", colorCodes[colorInput]);
+        }
+        // If neither apply, refund the user
+        else
+        {
+            CPH.TwitchRedemptionCancel(Convert.ToString(args["rewardId"]), Convert.ToString(args["redemptionId"]));
+        }
+
+        return true;
+    }
+}
